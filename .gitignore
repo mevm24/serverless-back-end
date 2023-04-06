@@ -1,0 +1,32 @@
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+cdktf.out
+
+dist/
+.npm/
+.env
+.gen/
+.vscode
+/docker
+
+# IntelliJ
+*.iml
+.idea/
+
+# MacOS
+# .DS_Store is created in any directory (folder) accessed by the Finder application
+.DS_Store
+
+# Module
+*.cjs
+!.eslintrc.cjs
+!.prettierrc.cjs
+nodejs
+.aws-sam/
+
+
+.serverless/

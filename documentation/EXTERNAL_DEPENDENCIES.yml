@@ -1,0 +1,17 @@
+# External Dependencies
+# This document lists all dependencies external to this service and redundancy plans for them
+---
+Dependent Services:
+    - Name: Random.org
+      Description: Used to obtain random string tokens
+      Redundancy Plan:
+          Strategy if dependency is down: None
+          Are you making use of the caching / redundancy strategies offered by dependency: Not at the moment
+
+Data Stores:
+    - Name: Dynamodb
+      Description: Database for internal storage
+      Version: 2019.11.21
+      Redundancy Plan:
+          Strategy if dependency is down: Invoking service will log error if unable to complete transaction
+          Are you making use of caching / redundancy strategies offered by dependency: Not at the moment

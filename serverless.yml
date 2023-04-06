@@ -1,0 +1,130 @@
+service: serverless-backend-app
+
+custom:
+    dynamodb:
+        stages:
+            - ${self:provider.stage}
+
+provider:
+    name: aws
+    runtime: nodejs16.x
+    region: us-east-1
+    stage: dev
+    logRetentionInDays: 7
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+              - dynamodb:BatchWriteItem
+              - dynamodb:GetItem
+              - dynamodb:BatchGetItem
+              - dynamodb:Scan
+              - dynamodb:Query
+              - dynamodb:ConditionCheckItem
+          Resource:
+              - !Sub 'arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/${self:service}-user'
+              - !Sub 'arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/${self:service}-user/index/*'
+              - !Sub 'arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/${self:service}-record'
+              - !Sub 'arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/${self:service}-record/index/*'
+              - !Sub 'arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/${self:service}-operation'
+              - !Sub 'arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/${self:service}-operation/index/*'
+    environment:
+        JWT_SECRET: 'MIIBOgIBAAJBAI0+C9c7pnJN0DnXCF8Dt7eJtwpH7yUyIej57arHM3U8t8PNidfskfXCJgZopgB54Hq8E1cN4urJ/9VBVkmFIdUCAwEAAQJAEw/1ryXI0BJ6cOP5qEErMWUvw/5zYzTB6NyaW/sokcDdOZMdvZOAvt5xbC10MXF1BJ1v3GFOYU0biQrXVnxs3QIhANvjWSNNyWhJMQylfVaLKqgkgPthx/cZzq6H5uu7lOG3AiEApHA7sTigiL2jPOcLT317QgBuTwqvoKm4lHlsHkfJqNMCIColz+Y2eM6miOJVrkqybkDAjoCg44V3yuglYJv63rTNAiBd3h+FHAEv7akYY/+l4ciRtbNCdaQp/5h5URLx+iLYtwIhAJ8hGIP1C3l3t6kPrbRVOXkZo0OOYH1RWGfvGqkmXVM+'
+        PROJECT_NAME: serverless-backend-app
+        ENVIRONMENT: dev
+
+functions:
+    app:
+        handler: dist/index.handler
+        events:
+            - http: ANY /
+            - http: 'ANY /{proxy+}'
+
+resources:
+    Resources:
+        UserTable:
+            Type: 'AWS::DynamoDB::Table'
+            Properties:
+                TableName: ${self:service}-user
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                    - AttributeName: username
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                    - AttributeName: username
+                      KeyType: RANGE
+                BillingMode: PAY_PER_REQUEST
+                GlobalSecondaryIndexes:
+                    - IndexName: usernameIndex
+                      KeySchema:
+                          - AttributeName: username
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+        OperationTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:service}-operation
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                    - AttributeName: type
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                    - AttributeName: type
+                      KeyType: RANGE
+                BillingMode: PAY_PER_REQUEST
+                GlobalSecondaryIndexes:
+                    - IndexName: typeIndex
+                      KeySchema:
+                          - AttributeName: type
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+        RecordTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:service}-record
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                    - AttributeName: createdAt
+                      AttributeType: S
+                    - AttributeName: user_id
+                      AttributeType: S
+                    - AttributeName: operation_id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                    - AttributeName: createdAt
+                      KeyType: RANGE
+                BillingMode: PAY_PER_REQUEST
+                GlobalSecondaryIndexes:
+                    - IndexName: userIndex
+                      KeySchema:
+                          - AttributeName: user_id
+                            KeyType: HASH
+                          - AttributeName: createdAt
+                            KeyType: RANGE
+                      Projection:
+                          ProjectionType: ALL
+                    - IndexName: operationIndex
+                      KeySchema:
+                          - AttributeName: operation_id
+                            KeyType: HASH
+                          - AttributeName: createdAt
+                            KeyType: RANGE
+                      Projection:
+                          ProjectionType: ALL
+
+plugins:
+    - serverless-dynamodb-local
+    - serverless-offline
