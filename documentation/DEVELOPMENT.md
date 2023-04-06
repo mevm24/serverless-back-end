@@ -119,6 +119,24 @@ After create the tables, you can create the operation in the table `serverless-b
 ]
 ```
 
+### User Creations
+
+As of the operations endpoints, you'll need to create a user to start testing the endpoints. You can use either the `Create User` endpoint from the postman library refered in the `LIVE-DOCS.MD`, or you can add them manually to the table `serverless-back-end-user`:
+
+```
+{
+  "createdAt": "2023-04-02T19:50:26.706Z",
+  "password": "$2a$10$taK80zzkq6dAWVyPB2JFP.Swj4.8loL8TuqOjLHrp/i6niHQNenjG",
+  "balance": 0,
+  "id": "1c1d80b4-4d38-4e6f-90f0-363e1e7362a6",
+  "status": true,
+  "updatedAt": "2023-04-02T19:50:26.706Z",
+  "username": "prueba@prueba.com"
+}
+```
+
+This user will have `prueba@prueba.com` as username and `PruebaContraseñaDificl@` as the password.
+
 ### Environment Variables Setup
 
 For running the service locally, enter these values in your environment variables or .env file located in the root of the project:
@@ -131,9 +149,9 @@ POcLT317QgBuTwqvoKm4lHlsHkfJqNMCIColz+Y2eM6miOJVrkqybkDAjoCg44V3
 yuglYJv63rTNAiBd3h+FHAEv7akYY/+l4ciRtbNCdaQp/5h5URLx+iLYtwIhAJ8h
 GIP1C3l3t6kPrbRVOXkZo0OOYH1RWGfvGqkmXVM+
 
-`AWS_ACCESS_KEY_ID`= Your Own AWS_ACCESS_KEY_ID #NotNeeded
+`AWS_ACCESS_KEY_ID`= Your Own AWS_ACCESS_KEY_ID `NotNeededForLocal`
 
-`AWS_SECRET_ACCESS_KEY`= Your own AWS_SECRET_ACCESS_KEY #NotNeeded
+`AWS_SECRET_ACCESS_KEY`= Your own AWS_SECRET_ACCESS_KEY `NotNeededForLocal`
 
 `AWS_DEFAULT_REGION`=us-east-1
 
