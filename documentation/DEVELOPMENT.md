@@ -12,6 +12,7 @@
 4. [Operations Creations](#operations-creations)
 5. [Setup Environment Variables](#environment-variables-setup)
 6. [Install Project Dependencies](#project-dependencies-installation)
+7. [Build Project for the first Time](#building-the-application)
 
 ### Local DynamoDB Setup
 
@@ -127,7 +128,7 @@ As of the operations endpoints, you'll need to create a user to start testing th
 {
   "createdAt": "2023-04-02T19:50:26.706Z",
   "password": "$2a$10$taK80zzkq6dAWVyPB2JFP.Swj4.8loL8TuqOjLHrp/i6niHQNenjG",
-  "balance": 0,
+  "balance": 20000,
   "id": "1c1d80b4-4d38-4e6f-90f0-363e1e7362a6",
   "status": true,
   "updatedAt": "2023-04-02T19:50:26.706Z",
@@ -149,9 +150,9 @@ POcLT317QgBuTwqvoKm4lHlsHkfJqNMCIColz+Y2eM6miOJVrkqybkDAjoCg44V3
 yuglYJv63rTNAiBd3h+FHAEv7akYY/+l4ciRtbNCdaQp/5h5URLx+iLYtwIhAJ8h
 GIP1C3l3t6kPrbRVOXkZo0OOYH1RWGfvGqkmXVM+
 
-`AWS_ACCESS_KEY_ID`= Your Own AWS_ACCESS_KEY_ID `NotNeededForLocal`
+`AWS_ACCESS_KEY_ID`=sometext
 
-`AWS_SECRET_ACCESS_KEY`= Your own AWS_SECRET_ACCESS_KEY `NotNeededForLocal`
+`AWS_SECRET_ACCESS_KEY`=sometext
 
 `AWS_DEFAULT_REGION`=us-east-1
 
@@ -168,6 +169,16 @@ In the main folder the project and execute the following command:
 ```bash
 $ npm install
 ```
+
+### Building the Application
+
+After run the npm install command, you must run the following command:
+
+```bash
+$ npm run build
+```
+
+After that you'll be able to run the application locally
 
 ## Running the Application Locally
 
